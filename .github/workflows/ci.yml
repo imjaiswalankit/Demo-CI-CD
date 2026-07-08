@@ -1,0 +1,30 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [22.x]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+
+      - run: node -v
+      - run: npm -v
+      - run: ls -la
+      - run: cat package.json
+
+      - run: npm ci
+      - run: npm test
